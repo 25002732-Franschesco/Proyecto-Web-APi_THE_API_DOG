@@ -14,17 +14,17 @@ const textoOrigen = document.getElementById('dog-origin');
 
 async function buscarPerro() {
     const texto = cajaTexto.value.trim();
-
-    if (texto === '') {
-        alert('Escribe una raza por favor');
-        return;
-    }
+    if (texto === '') return;
 
     try {
+        console.log("Buscando en la API...");
         const respuesta = await fetch(`https://api.thedogapi.com/v1/breeds/search?q=${texto}`, {
             headers: { 'x-api-key': apiKey }
         });
+        
+        console.log("Código de estado de la API:", respuesta.status); // <--- Esto nos dirá si la rechaza (403, 401, etc.)
         const lista = await respuesta.json();
+        console.log("Datos recibidos:", lista);
 
         if (lista.length === 0) {
             tarjetaResultado.classList.add('hidden');
@@ -32,56 +32,23 @@ async function buscarPerro() {
             return;
         }
 
-        mostrarDatos(lista[0]);
+        const perro = lista[0];
+        textoNombre.textContent = perro.name;
+        textoCaracter.textContent = perro.temperament || 'No especificado';
+        textoVida.textContent = perro.life_span || 'No especificado';
+        textoOrigen.textContent = perro.origin || 'Desconocido';
+        
+        imagenPerro.src = perro.image?.url || "https://images.unsplash.com/photo-1543466835-00a7907e9de1";
+
+        avisoError.classList.add('hidden');
+        tarjetaResultado.classList.remove('hidden');
 
     } catch (error) {
-        console.log("Error:", error);
+        console.log("Error crítico atrapado:", error);
     }
-}
-
-async function buscarAleatorio() {
-    try {
-        const respuesta = await fetch(`https://api.thedogapi.com/v1/images/search?has_breeds=1`, {
-            headers: { 'x-api-key': apiKey }
-        });
-        const datos = await respuesta.json();
-
-        if (datos.length > 0 && datos[0].breeds.length > 0) {
-            const perroAleatorio = datos[0].breeds[0];
-            imagenPerro.src = datos[0].url;
-            mostrarDatos(perroAleatorio);
-            cajaTexto.value = '';
-        }
-    } catch (error) {
-        console.log("Error al cargar aleatorio:", error);
-    }
-}
-
-async function mostrarDatos(perro) {
-    textoNombre.textContent = perro.name;
-    textoCaracter.textContent = perro.temperament || 'No especificado';
-    textoVida.textContent = perro.life_span || 'No especificado';
-    textoOrigen.textContent = perro.origin || 'Desconocido';
-
-    if (perro.id && !imagenPerro.src.includes(perro.id)) {
-        const respuestaFoto = await fetch(`https://api.thedogapi.com/v1/images/search?breed_ids=${perro.id}`, {
-            headers: { 'x-api-key': apiKey }
-        });
-        const datosFoto = await respuestaFoto.json();
-
-        if (datosFoto.length > 0) {
-            imagenPerro.src = datosFoto[0].url;
-        }
-    }
-
-    avisoError.classList.add('hidden');
-    tarjetaResultado.classList.remove('hidden');
 }
 
 botonBuscar.addEventListener('click', buscarPerro);
-botonAleatorio.addEventListener('click', buscarAleatorio);
 cajaTexto.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        buscarPerro();
-    }
+    if (e.key === 'Enter') buscarPerro();
 });
