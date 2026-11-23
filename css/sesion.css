@@ -1,21 +1,16 @@
 .campo-grupo {
     display: flex;
-    margin-bottom: 14px;
+    margin-bottom: 10px;
 }
 
 select {
     flex: 1;
-    background-color: white;
     border: 2px solid var(--mentita);
-    padding: 10px 12px;
-    border-radius: 8px;
+    padding: 7px 9px;
+    border-radius: 5px;
     font-size: 13px;
+    background-color: white;
     color: var(--azul-oscuro);
-    outline: none;
-}
-
-select:focus {
-    border-color: var(--mentolado);
 }
 
 .btn-completo {
@@ -23,17 +18,10 @@ select:focus {
 }
 
 .texto-cambio {
-    margin-top: 15px;
+    margin-top: 12px;
     font-size: 13px;
-    color: var(--azul-oscuro);
 }
 
 .texto-cambio a {
     color: var(--mentolado);
-    font-weight: 600;
-    text-decoration: none;
-}
-
-.texto-cambio a:hover {
-    text-decoration: underline;
 }

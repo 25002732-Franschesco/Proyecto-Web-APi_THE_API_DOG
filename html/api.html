@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buscador de Razas de Perros</title>
+    <title>Buscador de Razas de Perritos</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body onload="mostrarUsuarioActivo()">
 
     <div class="card">
         <h1>Buscador de Perritos</h1>
-        <p id="usuario-activo">Escribe la raza a consultar:</p>
+        <p id="usuario-activo">Escribe la raza a buscar:</p>
 
         <div class="search-box">
             <input type="text" id="input-search" placeholder="Ej. Golden Retriever, Poodle...">
@@ -24,17 +24,17 @@
             </div>
 
             <div class="details">
-                <h2 id="dog-name">Nombre de la raza</h2>
+                <h2 id="dog-name">Raza</h2>
                 <p><strong>Personalidad:</strong> <span id="dog-temperament">-</span></p>
                 <p><strong>Esperanza de vida:</strong> <span id="dog-life">-</span></p>
                 <p><strong>Origen:</strong> <span id="dog-origin">-</span></p>
             </div>
         </div>
 
-        <p id="error-msg" class="error hidden">No encontramos esa raza, intenta con otra.</p>
+        <p id="error-msg" class="error hidden">No lo encontramos, prueba otra distinta.</p>
 
         <button onclick="cerrarSesion()" style="width: 100%; margin-top: 15px; background-color: var(--azul-oscuro);">
-            Cerrar sesión
+            Cerrar Sesión
         </button>
     </div>
 
