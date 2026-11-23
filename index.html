@@ -3,37 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buscador de Razas de Perros</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Registro</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/sesion.css">
 </head>
 <body>
 
     <div class="card">
-        <h1>Buscador de Perritos</h1>
-        <p>Escribe la raza a consultar:</p>
+        <h1>Crear Cuenta</h1>
+        <p>Registra un nuevo usuario:</p>
 
-        <div class="search-box">
-            <input type="text" id="input-search" placeholder="Ej. Golden Retriever, Poodle...">
-            <button id="btn-search">Buscar</button>
-            <button id="btn-random">Aleatorio</button>
-        </div>
-
-        <div id="result-container" class="hidden">
-            <div class="img-container">
-                <img id="dog-img" src="" alt="Foto del perro">
+        <form onsubmit="registrarUsuario(event)">
+            <div class="search-box">
+                <input type="text" id="regUser" placeholder="Usuario" required>
             </div>
-            
-            <div class="details">
-                <h2 id="dog-name">Nombre de la raza</h2>
-                <p><strong>Personalidad:</strong> <span id="dog-temperament">-</span></p>
-                <p><strong>Esperanza de vida:</strong> <span id="dog-life">-</span></p>
-                <p><strong>Origen:</strong> <span id="dog-origin">-</span></p>
+            <div class="search-box">
+                <input type="password" id="regPass" placeholder="Contraseña" required>
             </div>
-        </div>
+            <div class="search-box">
+                <select id="regRol" style="flex: 1; padding: 10px 12px; border-radius: 8px; border: 2px solid var(--mentita); background: white; color: var(--azul-oscuro); font-size: 13px;">
+                    <option value="Cliente">Cliente</option>
+                    <option value="Boss">Boss</option>
+                    <option value="Admin">Admin</option>
+                </select>
+            </div>
+            <button type="submit" style="width: 100%;">Registrarme</button>
+        </form>
 
-        <p id="error-msg" class="error hidden">No encontramos esa raza, intenta con otra.</p>
+        <p style="margin-top: 15px; font-size: 13px;">
+            ¿Ya tienes cuenta? <a href="./html/sesion.html" style="color: var(--mentolado); font-weight: 600;">Iniciar sesión</a>
+        </p>
     </div>
 
-    <script src="app.js"></script>
+    <script src="./js/registro.js"></script>
 </body>
 </html>
