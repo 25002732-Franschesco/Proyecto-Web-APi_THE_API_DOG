@@ -8,31 +8,28 @@
     <link rel="stylesheet" href="./css/sesion.css">
 </head>
 <body>
-
     <div class="card">
-        <h1>Crear Cuenta</h1>
-        <p>Registra un nuevo usuario:</p>
+        <h1>Registro</h1>
+        <p>Crea tu cuenta:</p>
 
-        <form onsubmit="registrarUsuario(event)">
-            <div class="search-box">
-                <input type="text" id="regUser" placeholder="Usuario" required>
+        <form onsubmit="registrar(event)">
+            <div class="fila">
+                <input type="text" id="usuarioReg" placeholder="Usuario" required>
             </div>
-            <div class="search-box">
-                <input type="password" id="regPass" placeholder="Contraseña" required>
+            <div class="fila">
+                <input type="password" id="claveReg" placeholder="Contraseña" required>
             </div>
-            <div class="search-box">
-                 <select id="regRol" style="flex: 1; padding: 10px 12px; border-radius: 8px; border: 2px solid var(--mentita); background: white; color: var(--azul-oscuro); font-size: 13px;">
+            <div class="fila">
+                <select id="rolReg">
                     <option value="cliente">cliente</option>
-                    <option value="boss">boss</option>
                     <option value="admin">admin</option>
+                    <option value="boss">boss</option>
                 </select>
             </div>
-            <button type="submit" style="width: 100%;">Registrarme</button>
+            <button type="submit" class="ancho-full">Registrarme</button>
         </form>
 
-        <p style="margin-top: 15px; font-size: 13px;">
-            ¿Ya tienes cuenta? <a href="./html/sesion.html" style="color: var(--mentolado); font-weight: 600;">Iniciar sesión</a>
-        </p>
+        <p class="enlace-texto">¿Ya tienes cuenta? <a href="./html/sesion.html">Inicia sesión</a></p>
     </div>
 
     <script src="./js/registro.js"></script>

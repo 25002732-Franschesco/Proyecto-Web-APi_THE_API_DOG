@@ -1,166 +1,160 @@
-const apiKey = 'live_C4Q9wVJG0cnMC6BYoQ3X7Gt8e8RyMxYYBXWUiymAK23DnGjJQR4eQd46StPme3lg';
+const llaveApi = 'live_C4Q9wVJG0cnMC6BYoQ3X7Gt8e8RyMxYYBXWUiymAK23DnGjJQR4eQd46StPme3lg';
 
-const cajaTexto = document.getElementById('input-search');
-const botonBuscar = document.getElementById('btn-search');
-const botonAleatorio = document.getElementById('btn-random');
-const zonaTablaBtn = document.getElementById('zona-tabla-btn');
-const botonTabla = document.getElementById('btn-tabla');
+const textoBuscar = document.getElementById('textoBuscar');
+const btnBuscar = document.getElementById('btnBuscar');
+const btnAleatorio = document.getElementById('btnAleatorio');
+const cajaBotonPeso = document.getElementById('cajaBotonPeso');
+const btnPeso = document.getElementById('btnPeso');
 
-const tarjetaResultado = document.getElementById('result-container');
-const singleImgBox = document.getElementById('single-img-box');
-const multiImgBox = document.getElementById('multi-img-box');
-const avisoError = document.getElementById('error-msg');
+const resultado = document.getElementById('resultado');
+const fotoSola = document.getElementById('fotoSola');
+const fotosVarias = document.getElementById('fotosVarias');
+const errorPerro = document.getElementById('errorPerro');
 
-const imagenPerro = document.getElementById('dog-img');
-const textoNombre = document.getElementById('dog-name');
-const textoCaracter = document.getElementById('dog-temperament');
-const textoVida = document.getElementById('dog-life');
-const textoOrigen = document.getElementById('dog-origin');
+const imgPerro = document.getElementById('imgPerro');
+const nombrePerro = document.getElementById('nombrePerro');
+const personalidadPerro = document.getElementById('personalidadPerro');
+const vidaPerro = document.getElementById('vidaPerro');
+const origenPerro = document.getElementById('origenPerro');
 
-const panelTabla = document.getElementById('panel-tabla');
-const tbodyPeso = document.getElementById('tbody-peso');
-const consejoSalud = document.getElementById('consejo-salud');
+const cajaPeso = document.getElementById('cajaPeso');
+const cuerpoTablaPeso = document.getElementById('cuerpoTablaPeso');
+const consejo = document.getElementById('consejo');
 
-let rolActual = 'cliente';
+let rol = 'cliente';
 let perroActual = null;
 
-function obtenerRol() {
-    const sesion = JSON.parse(sessionStorage.getItem('sesionActiva'));
+function leerRol() {
+    const sesion = JSON.parse(sessionStorage.getItem('usuarioActivo'));
     return sesion && sesion.rol ? sesion.rol.toLowerCase() : 'cliente';
 }
 
-function mostrarDatos(perro, listaImagenes) {
+function mostrarPerro(perro, fotos) {
     perroActual = perro;
 
-    textoNombre.textContent = perro.name;
-    textoCaracter.textContent = perro.temperament || 'No especificado';
-    textoVida.textContent = perro.life_span || 'No especificado';
-    textoOrigen.textContent = perro.origin || 'Desconocido';
+    nombrePerro.textContent = perro.name;
+    personalidadPerro.textContent = perro.temperament || 'No especificado';
+    vidaPerro.textContent = perro.life_span || 'No especificado';
+    origenPerro.textContent = perro.origin || 'Desconocido';
 
-    const fotoPrincipal = listaImagenes.length > 0
-        ? listaImagenes[0].url
-        : 'https://images.unsplash.com/photo-1543466835-00a7907e9de1';
+    const fotoPrincipal = fotos.length > 0 ? fotos[0].url : 'https://images.unsplash.com/photo-1543466835-00a7907e9de1';
 
-    if (rolActual === 'admin' || rolActual === 'boss') {
-        singleImgBox.classList.add('hidden');
-        multiImgBox.classList.remove('hidden');
-        multiImgBox.innerHTML = '';
+    if (rol === 'admin' || rol === 'boss') {
+        fotoSola.classList.add('ocultar');
+        fotosVarias.classList.remove('ocultar');
+        fotosVarias.innerHTML = '';
 
-        const fotos = listaImagenes.length > 0 ? listaImagenes : [{ url: fotoPrincipal }];
-        fotos.forEach(item => {
+        const listaFotos = fotos.length > 0 ? fotos : [{ url: fotoPrincipal }];
+        listaFotos.forEach(item => {
             const img = document.createElement('img');
             img.src = item.url;
             img.alt = perro.name;
-            multiImgBox.appendChild(img);
+            fotosVarias.appendChild(img);
         });
     } else {
-        multiImgBox.classList.add('hidden');
-        singleImgBox.classList.remove('hidden');
-        imagenPerro.src = fotoPrincipal;
+        fotosVarias.classList.add('ocultar');
+        fotoSola.classList.remove('ocultar');
+        imgPerro.src = fotoPrincipal;
     }
 
-    avisoError.classList.add('hidden');
-    tarjetaResultado.classList.remove('hidden');
+    errorPerro.classList.add('ocultar');
+    resultado.classList.remove('ocultar');
 
-    if ((rolActual === 'admin' || rolActual === 'boss') && !panelTabla.classList.contains('hidden')) {
-        mostrarTablaPeso();
+    if ((rol === 'admin' || rol === 'boss') && !cajaPeso.classList.contains('ocultar')) {
+        verPeso();
     }
 }
 
-function buscarPerro() {
-    const texto = cajaTexto.value.trim();
-    if (texto === '') return;
+function buscarRaza() {
+    const nombre = textoBuscar.value.trim();
+    if (nombre === '') return;
 
-    fetch(`https://api.thedogapi.com/v1/breeds/search?q=${texto}`, {
-        headers: { 'x-api-key': apiKey }
+    fetch(`https://api.thedogapi.com/v1/breeds/search?q=${nombre}`, {
+        headers: { 'x-api-key': llaveApi }
     })
     .then(res => res.json())
     .then(lista => {
         if (lista.length === 0) {
-            tarjetaResultado.classList.add('hidden');
-            avisoError.classList.remove('hidden');
+            resultado.classList.add('ocultar');
+            errorPerro.classList.remove('ocultar');
             return;
         }
 
         const perro = lista[0];
-        const limiteFotos = (rolActual === 'admin' || rolActual === 'boss') ? 4 : 1;
+        const cantidadFotos = (rol === 'admin' || rol === 'boss') ? 4 : 1;
 
-        fetch(`https://api.thedogapi.com/v1/images/search?breed_ids=${perro.id}&limit=${limiteFotos}`, {
-            headers: { 'x-api-key': apiKey }
+        fetch(`https://api.thedogapi.com/v1/images/search?breed_ids=${perro.id}&limit=${cantidadFotos}`, {
+            headers: { 'x-api-key': llaveApi }
         })
-        .then(r => r.json())
-        .then(imgs => {
-            mostrarDatos(perro, imgs);
-        });
+        .then(res => res.json())
+        .then(fotos => mostrarPerro(perro, fotos));
     })
-    .catch(err => console.log('Error:', err));
+    .catch(err => console.log(err));
 }
 
-function buscarAleatorio() {
+function perroAleatorio() {
     fetch('https://api.thedogapi.com/v1/images/search?has_breeds=1', {
-        headers: { 'x-api-key': apiKey }
+        headers: { 'x-api-key': llaveApi }
     })
     .then(res => res.json())
     .then(datos => {
         if (datos.length > 0 && datos[0].breeds.length > 0) {
             const perro = datos[0].breeds[0];
-            cajaTexto.value = '';
+            textoBuscar.value = '';
 
-            if (rolActual === 'admin' || rolActual === 'boss') {
+            if (rol === 'admin' || rol === 'boss') {
                 fetch(`https://api.thedogapi.com/v1/images/search?breed_ids=${perro.id}&limit=4`, {
-                    headers: { 'x-api-key': apiKey }
+                    headers: { 'x-api-key': llaveApi }
                 })
-                .then(r => r.json())
-                .then(imgs => mostrarDatos(perro, imgs));
+                .then(res => res.json())
+                .then(fotos => mostrarPerro(perro, fotos));
             } else {
-                mostrarDatos(perro, [{ url: datos[0].url }]);
+                mostrarPerro(perro, [{ url: datos[0].url }]);
             }
         }
     })
-    .catch(err => console.log('Error:', err));
+    .catch(err => console.log(err));
 }
 
-function mostrarTablaPeso() {
+function verPeso() {
     if (!perroActual) {
-        alert('Primero busca una raza o presiona Aleatorio');
+        alert('Primero busca una raza o da clic en Aleatorio');
         return;
     }
 
-    const pintar = (pesoStr) => {
-        const limpio = (pesoStr || '').trim();
-        const numeros = limpio.match(/\d+(\.\d+)?/g);
+    const dibujarTabla = (pesoTexto) => {
+        const limpio = (pesoTexto || '').trim();
+        const nums = limpio.match(/\d+(\.\d+)?/g);
 
-        if (!numeros || numeros.length === 0) {
-            tbodyPeso.innerHTML = `
+        if (!nums) {
+            cuerpoTablaPeso.innerHTML = `
                 <tr>
                     <td>${perroActual.name}</td>
                     <td>No disponible</td>
-                    <td>Desconocido</td>
+                    <td>-</td>
                 </tr>
             `;
-            if (rolActual === 'boss') {
-                consejoSalud.innerHTML = `<strong>Consejo de salud:</strong> Consulta el peso ideal de esta raza con un veterinario antes de ajustar su dieta y ejercicio.`;
-                consejoSalud.classList.remove('hidden');
-            } else {
-                consejoSalud.classList.add('hidden');
+            if (rol === 'boss') {
+                consejo.textContent = 'Consejo: consulta con el veterinario el peso ideal de esta raza.';
+                consejo.classList.remove('ocultar');
             }
-            panelTabla.classList.remove('hidden');
+            cajaPeso.classList.remove('ocultar');
             return;
         }
 
-        const pesoMax = parseFloat(numeros[numeros.length - 1]);
+        const maxPeso = parseFloat(nums[nums.length - 1]);
         let tamano = 'Mediano';
-        let consejo = 'Paseos diarios de 40 a 60 minutos y control de porciones para cuidar su peso.';
+        let textoConsejo = 'Paseo diario y porciones medidas para mantener su peso.';
 
-        if (pesoMax <= 10) {
+        if (maxPeso <= 10) {
             tamano = 'Pequeño';
-            consejo = 'Croquetas de grano pequeño, higiene dental frecuente y cuidado con saltos altos.';
-        } else if (pesoMax > 25) {
+            textoConsejo = 'Croquetas pequeñas y cuidar sus dientes y saltos.';
+        } else if (maxPeso > 25) {
             tamano = 'Grande';
-            consejo = 'Cuida sus articulaciones evitando ejercicio intenso justo después de comer y revisa su cadera.';
+            textoConsejo = 'Cuidar articulaciones y evitar correr justo después de comer.';
         }
 
-        tbodyPeso.innerHTML = `
+        cuerpoTablaPeso.innerHTML = `
             <tr>
                 <td>${perroActual.name}</td>
                 <td>${limpio} kg</td>
@@ -168,59 +162,59 @@ function mostrarTablaPeso() {
             </tr>
         `;
 
-        if (rolActual === 'boss') {
-            consejoSalud.innerHTML = `<strong>Consejo de salud:</strong> ${consejo}`;
-            consejoSalud.classList.remove('hidden');
+        if (rol === 'boss') {
+            consejo.textContent = 'Consejo: ' + textoConsejo;
+            consejo.classList.remove('ocultar');
         } else {
-            consejoSalud.classList.add('hidden');
+            consejo.classList.add('ocultar');
         }
 
-        panelTabla.classList.remove('hidden');
+        cajaPeso.classList.remove('ocultar');
     };
 
     if (perroActual.weight?.metric) {
-        pintar(perroActual.weight.metric);
+        dibujarTabla(perroActual.weight.metric);
     } else {
         fetch('https://api.thedogapi.com/v1/breeds', {
-            headers: { 'x-api-key': apiKey }
+            headers: { 'x-api-key': llaveApi }
         })
         .then(res => res.json())
         .then(razas => {
-            const encontrada = razas.find(r => r.id === perroActual.id || r.name === perroActual.name);
-            pintar(encontrada?.weight?.metric || '');
+            const raza = razas.find(r => r.id === perroActual.id || r.name === perroActual.name);
+            dibujarTabla(raza?.weight?.metric || '');
         })
-        .catch(() => pintar(''));
+        .catch(() => dibujarTabla(''));
     }
 }
 
-function iniciarVistaPorRol() {
-    rolActual = obtenerRol();
-    const titulo = document.getElementById('titulo-rol');
+function configurarRol() {
+    rol = leerRol();
+    const titulo = document.getElementById('titulo');
 
-    botonAleatorio.classList.add('hidden');
-    zonaTablaBtn.classList.add('hidden');
-    panelTabla.classList.add('hidden');
-    consejoSalud.classList.add('hidden');
+    btnAleatorio.classList.add('ocultar');
+    cajaBotonPeso.classList.add('ocultar');
+    cajaPeso.classList.add('ocultar');
+    consejo.classList.add('ocultar');
 
-    if (rolActual === 'admin') {
-        titulo.textContent = 'Buscador + Galería + Peso (Admin)';
-        botonAleatorio.classList.remove('hidden');
-        zonaTablaBtn.classList.remove('hidden');
-    } else if (rolActual === 'boss') {
-        titulo.textContent = 'Buscador + Galería + Salud (Boss)';
-        botonAleatorio.classList.remove('hidden');
-        zonaTablaBtn.classList.remove('hidden');
-        botonTabla.textContent = 'Ver tabla de peso y consejo de salud';
+    if (rol === 'admin') {
+        titulo.textContent = 'Perritos (Admin)';
+        btnAleatorio.classList.remove('ocultar');
+        cajaBotonPeso.classList.remove('ocultar');
+    } else if (rol === 'boss') {
+        titulo.textContent = 'Perritos (Boss)';
+        btnAleatorio.classList.remove('ocultar');
+        cajaBotonPeso.classList.remove('ocultar');
+        btnPeso.textContent = 'Ver tabla de peso y consejo';
     } else {
-        titulo.textContent = 'Buscador de Perritos (Cliente)';
+        titulo.textContent = 'Perritos (Cliente)';
     }
 }
 
-botonBuscar.addEventListener('click', buscarPerro);
-botonAleatorio.addEventListener('click', buscarAleatorio);
-botonTabla.addEventListener('click', mostrarTablaPeso);
-cajaTexto.addEventListener('keypress', e => {
-    if (e.key === 'Enter') buscarPerro();
+btnBuscar.addEventListener('click', buscarRaza);
+btnAleatorio.addEventListener('click', perroAleatorio);
+btnPeso.addEventListener('click', verPeso);
+textoBuscar.addEventListener('keypress', e => {
+    if (e.key === 'Enter') buscarRaza();
 });
 
-iniciarVistaPorRol();
+configurarRol();

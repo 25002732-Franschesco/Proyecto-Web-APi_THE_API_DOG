@@ -1,27 +1,8 @@
-.campo-grupo {
-    display: flex;
-    margin-bottom: 10px;
-}
-
-select {
-    flex: 1;
-    border: 2px solid var(--mentita);
-    padding: 7px 9px;
-    border-radius: 5px;
-    font-size: 13px;
-    background-color: white;
-    color: var(--azul-oscuro);
-}
-
-.btn-completo {
-    width: 100%;
-}
-
-.texto-cambio {
+.enlace-texto {
     margin-top: 12px;
     font-size: 13px;
 }
 
-.texto-cambio a {
+.enlace-texto a {
     color: var(--mentolado);
 }

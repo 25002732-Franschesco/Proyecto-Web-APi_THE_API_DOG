@@ -1,54 +1,54 @@
 const usuariosBase = [
-    { usuario: 'admin', pass: '1234', rol: 'Admin', url: './html/api.html' },
-    { usuario: 'cliente', pass: '12345', rol: 'Cliente', url: './html/api.html' },
-    { usuario: 'jefe', pass: '123456', rol: 'Boss', url: './html/api.html' }
+    { usuario: 'admin', pass: '1234', rol: 'admin' },
+    { usuario: 'cliente', pass: '12345', rol: 'cliente' },
+    { usuario: 'boss', pass: '123456', rol: 'boss' }
 ];
 
 if (!localStorage.getItem('usuarios')) {
     localStorage.setItem('usuarios', JSON.stringify(usuariosBase));
 }
 
-window.onload = function() {
-    const recienCreado = localStorage.getItem('usuarioRecienCreado');
-    const campoUser = document.getElementById('inputUser');
+window.onload = function () {
+    const nuevo = localStorage.getItem('usuarioNuevo');
+    const input = document.getElementById('usuarioLogin');
 
-    if (recienCreado && campoUser) {
-        campoUser.value = recienCreado;
-        localStorage.removeItem('usuarioRecienCreado');
+    if (nuevo && input) {
+        input.value = nuevo;
+        localStorage.removeItem('usuarioNuevo');
     }
 
-    mostrarUsuarioActivo();
+    cargarDatosUsuario();
 };
 
-function iniciarSesion(e) {
-    e.preventDefault();
+function entrar(evento) {
+    evento.preventDefault();
 
-    const inputUser = document.getElementById('inputUser').value.trim();
-    const inputPass = document.getElementById('inputPass').value.trim();
-    const errorMsg = document.getElementById('errorMsg');
+    const user = document.getElementById('usuarioLogin').value.trim();
+    const pass = document.getElementById('claveLogin').value.trim();
+    const error = document.getElementById('mensajeError');
 
-    const listaUsuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-    const valido = listaUsuarios.find(u => u.usuario === inputUser && u.pass === inputPass);
+    const lista = JSON.parse(localStorage.getItem('usuarios')) || [];
+    const encontrado = lista.find(u => u.usuario === user && u.pass === pass);
 
-    if (valido) {
-        errorMsg.classList.add('hidden');
-        sessionStorage.setItem('sesionActiva', JSON.stringify(valido));
+    if (encontrado) {
+        error.classList.add('ocultar');
+        sessionStorage.setItem('usuarioActivo', JSON.stringify(encontrado));
         window.location.href = 'api.html';
     } else {
-        errorMsg.classList.remove('hidden');
+        error.classList.remove('ocultar');
     }
 }
 
-function cerrarSesion() {
-    sessionStorage.removeItem('sesionActiva');
+function salir() {
+    sessionStorage.removeItem('usuarioActivo');
     window.location.href = 'sesion.html';
 }
 
-function mostrarUsuarioActivo() {
-    const sesion = JSON.parse(sessionStorage.getItem('sesionActiva'));
-    const etiqueta = document.getElementById('usuario-activo');
+function cargarDatosUsuario() {
+    const sesion = JSON.parse(sessionStorage.getItem('usuarioActivo'));
+    const etiqueta = document.getElementById('infoUsuario');
 
     if (sesion && etiqueta) {
-        etiqueta.textContent = `Usuario: ${sesion.usuario} (${sesion.rol}) — Escribe la raza a consultar:`;
+        etiqueta.textContent = 'Usuario: ' + sesion.usuario + ' (' + sesion.rol + ')';
     }
 }

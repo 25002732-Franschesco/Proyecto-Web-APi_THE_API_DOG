@@ -8,26 +8,23 @@
     <link rel="stylesheet" href="../css/sesion.css">
 </head>
 <body>
-
     <div class="card">
         <h1>Iniciar Sesión</h1>
-        <p>Ingresa con tu cuenta:</p>
+        <p>Entra con tu usuario:</p>
 
-        <form onsubmit="iniciarSesion(event)">
-            <div class="search-box">
-                <input type="text" id="inputUser" placeholder="Usuario" required>
+        <form onsubmit="entrar(event)">
+            <div class="fila">
+                <input type="text" id="usuarioLogin" placeholder="Usuario" required>
             </div>
-            <div class="search-box">
-                <input type="password" id="inputPass" placeholder="Contraseña" required>
+            <div class="fila">
+                <input type="password" id="claveLogin" placeholder="Contraseña" required>
             </div>
-            <button type="submit" style="width: 100%;">Entrar</button>
+            <button type="submit" class="ancho-full">Entrar</button>
         </form>
 
-        <p id="errorMsg" class="error hidden">Usuario o contraseña incorrectos.</p>
+        <p id="mensajeError" class="error ocultar">Usuario o contraseña mal.</p>
 
-        <p style="margin-top: 15px; font-size: 13px;">
-            ¿No tienes cuenta? <a href="../index.html" style="color: var(--mentolado); font-weight: 600;">Regístrate aquí</a>
-        </p>
+        <p class="enlace-texto">¿No tienes cuenta? <a href="../index.html">Regístrate</a></p>
     </div>
 
     <script src="../js/login.js"></script>

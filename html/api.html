@@ -3,48 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buscador de Razas de Perros</title>
+    <title>Perritos</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
-<body onload="mostrarUsuarioActivo()">
-
+<body onload="cargarDatosUsuario()">
     <div class="card">
-        <h1 id="titulo-rol">Buscador de Perritos</h1>
-        <p id="usuario-activo">Cargando sesión...</p>
+        <h1 id="titulo">Perritos</h1>
+        <p id="infoUsuario">Usuario:</p>
 
-        <!-- Barra de acciones según rol -->
-        <div class="search-box">
-            <input type="text" id="input-search" placeholder="Ej. Golden Retriever, Poodle...">
-            <button id="btn-search">Buscar</button>
-            <button id="btn-random" class="hidden">Aleatorio</button>
+        <div class="fila">
+            <input type="text" id="textoBuscar" placeholder="Ej. Poodle, Husky...">
+            <button id="btnBuscar">Buscar</button>
+            <button id="btnAleatorio" class="ocultar">Aleatorio</button>
         </div>
 
-        <!-- Botón de tabla (admin y boss) -->
-        <div id="zona-tabla-btn" class="search-box hidden">
-            <button id="btn-tabla" style="width: 100%;">Ver tabla de peso</button>
+        <div id="cajaBotonPeso" class="fila ocultar">
+            <button id="btnPeso" class="ancho-full">Ver tabla de peso</button>
         </div>
 
-        <!-- Resultado de raza -->
-        <div id="result-container" class="hidden">
-            <!-- Foto única (cliente) -->
-            <div id="single-img-box" class="img-container">
-                <img id="dog-img" src="" alt="Foto del perro">
+        <div id="resultado" class="ocultar">
+            <div id="fotoSola" class="caja-foto">
+                <img id="imgPerro" src="" alt="Perro">
             </div>
 
-            <!-- Galería de varias fotos (admin y boss) -->
-            <div id="multi-img-box" class="galeria-grid hidden" style="margin-bottom: 10px;"></div>
+            <div id="fotosVarias" class="cuadricula ocultar"></div>
 
-            <div class="details">
-                <h2 id="dog-name">Nombre de la raza</h2>
-                <p><strong>Personalidad:</strong> <span id="dog-temperament">-</span></p>
-                <p><strong>Esperanza de vida:</strong> <span id="dog-life">-</span></p>
-                <p><strong>Origen:</strong> <span id="dog-origin">-</span></p>
+            <div class="caja-datos">
+                <h2 id="nombrePerro">Raza</h2>
+                <p><b>Personalidad:</b> <span id="personalidadPerro">-</span></p>
+                <p><b>Vida:</b> <span id="vidaPerro">-</span></p>
+                <p><b>Origen:</b> <span id="origenPerro">-</span></p>
             </div>
         </div>
 
-        <!-- Tabla de peso (admin y boss) + consejo de salud (solo boss) -->
-        <div id="panel-tabla" class="hidden" style="margin-top: 12px;">
-            <table id="tabla-peso">
+        <div id="cajaPeso" class="ocultar">
+            <table>
                 <thead>
                     <tr>
                         <th>Raza</th>
@@ -52,16 +45,14 @@
                         <th>Tamaño</th>
                     </tr>
                 </thead>
-                <tbody id="tbody-peso"></tbody>
+                <tbody id="cuerpoTablaPeso"></tbody>
             </table>
-            <p id="consejo-salud" class="details hidden" style="margin-top: 8px;"></p>
+            <p id="consejo" class="caja-datos ocultar"></p>
         </div>
 
-        <p id="error-msg" class="error hidden">No encontramos esa raza, intenta con otra.</p>
+        <p id="errorPerro" class="error ocultar">No se encontró esa raza.</p>
 
-        <button onclick="cerrarSesion()" style="width: 100%; margin-top: 15px; background-color: var(--azul-oscuro);">
-            Cerrar sesión
-        </button>
+        <button onclick="salir()" class="ancho-full btn-oscuro">Cerrar sesión</button>
     </div>
 
     <script src="../js/login.js"></script>
