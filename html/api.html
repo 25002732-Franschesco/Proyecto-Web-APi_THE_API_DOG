@@ -3,38 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buscador de Razas de Perritos</title>
+    <title>Buscador de Razas de Perros</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body onload="mostrarUsuarioActivo()">
 
     <div class="card">
-        <h1>Buscador de Perritos</h1>
-        <p id="usuario-activo">Escribe la raza a buscar:</p>
+        <h1 id="titulo-rol">Buscador de Perritos</h1>
+        <p id="usuario-activo">Cargando sesión...</p>
 
+        <!-- Barra de acciones según rol -->
         <div class="search-box">
             <input type="text" id="input-search" placeholder="Ej. Golden Retriever, Poodle...">
             <button id="btn-search">Buscar</button>
-            <button id="btn-random">Aleatorio</button>
+            <button id="btn-random" class="hidden">Aleatorio</button>
         </div>
 
+        <!-- Botón de tabla (admin y boss) -->
+        <div id="zona-tabla-btn" class="search-box hidden">
+            <button id="btn-tabla" style="width: 100%;">Ver tabla de peso</button>
+        </div>
+
+        <!-- Resultado de raza -->
         <div id="result-container" class="hidden">
-            <div class="img-container">
+            <!-- Foto única (cliente) -->
+            <div id="single-img-box" class="img-container">
                 <img id="dog-img" src="" alt="Foto del perro">
             </div>
 
+            <!-- Galería de varias fotos (admin y boss) -->
+            <div id="multi-img-box" class="galeria-grid hidden" style="margin-bottom: 10px;"></div>
+
             <div class="details">
-                <h2 id="dog-name">Raza</h2>
+                <h2 id="dog-name">Nombre de la raza</h2>
                 <p><strong>Personalidad:</strong> <span id="dog-temperament">-</span></p>
                 <p><strong>Esperanza de vida:</strong> <span id="dog-life">-</span></p>
                 <p><strong>Origen:</strong> <span id="dog-origin">-</span></p>
             </div>
         </div>
 
-        <p id="error-msg" class="error hidden">No lo encontramos, prueba otra distinta.</p>
+        <!-- Tabla de peso (admin y boss) + consejo de salud (solo boss) -->
+        <div id="panel-tabla" class="hidden" style="margin-top: 12px;">
+            <table id="tabla-peso">
+                <thead>
+                    <tr>
+                        <th>Raza</th>
+                        <th>Peso (kg)</th>
+                        <th>Tamaño</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-peso"></tbody>
+            </table>
+            <p id="consejo-salud" class="details hidden" style="margin-top: 8px;"></p>
+        </div>
+
+        <p id="error-msg" class="error hidden">No encontramos esa raza, intenta con otra.</p>
 
         <button onclick="cerrarSesion()" style="width: 100%; margin-top: 15px; background-color: var(--azul-oscuro);">
-            Cerrar Sesión
+            Cerrar sesión
         </button>
     </div>
 
