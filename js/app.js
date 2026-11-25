@@ -197,16 +197,16 @@ function configurarRol() {
     consejo.classList.add('ocultar');
 
     if (rol === 'admin') {
-        titulo.textContent = 'Perritos (Admin)';
+        titulo.textContent = 'Perritos';
         btnAleatorio.classList.remove('ocultar');
         cajaBotonPeso.classList.remove('ocultar');
     } else if (rol === 'boss') {
-        titulo.textContent = 'Perritos (Boss)';
+        titulo.textContent = 'Perritos';
         btnAleatorio.classList.remove('ocultar');
         cajaBotonPeso.classList.remove('ocultar');
         btnPeso.textContent = 'Ver tabla de peso y consejo';
     } else {
-        titulo.textContent = 'Perritos (Cliente)';
+        titulo.textContent = 'Perritos';
     }
 }
 
