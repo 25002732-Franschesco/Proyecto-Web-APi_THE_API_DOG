@@ -28,7 +28,9 @@ function entrar(evento) {
     const error = document.getElementById('mensajeError');
 
     const lista = JSON.parse(localStorage.getItem('usuarios')) || [];
-    const encontrado = lista.find(u => u.usuario === user && u.pass === pass);
+    const encontrado = lista.find(
+        u => u.usuario === user && u.pass === pass
+    );
 
     if (encontrado) {
         error.classList.add('ocultar');
