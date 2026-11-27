@@ -20,6 +20,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    padding: 16px;
 }
 
 .card {
@@ -31,6 +32,10 @@ body {
     width: 100%;
     max-width: 380px;
     text-align: center;
+}
+
+.ancho-app {
+    max-width: 540px;
 }
 
 h1 {
@@ -59,7 +64,7 @@ input, select {
     color: var(--azul-oscuro);
 }
 
-button {
+button.btn, button {
     background-color: var(--mentolado);
     color: white;
     border: none;
@@ -69,8 +74,13 @@ button {
     font-size: 13px;
 }
 
+button.btn:hover, button:hover {
+    background-color: #17877f;
+    color: white;
+}
+
 .btn-oscuro {
-    background-color: var(--azul-oscuro);
+    background-color: var(--azul-oscuro) !important;
     margin-top: 12px;
 }
 
@@ -79,7 +89,7 @@ button {
 }
 
 .ocultar {
-    display: none;
+    display: none !important;
 }
 
 .error {

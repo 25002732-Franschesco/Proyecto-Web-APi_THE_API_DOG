@@ -1,12 +1,34 @@
-const usuariosBase = [
-    { usuario: 'admin', pass: '1234', rol: 'admin' },
-    { usuario: 'cliente', pass: '12345', rol: 'cliente' },
+const initUsers = [
+    { usuario: 'cliente', pass: '1234', rol: 'cliente' },
+    { usuario: 'admin', pass: '12345', rol: 'admin' },
     { usuario: 'boss', pass: '123456', rol: 'boss' }
 ];
 
-if (!localStorage.getItem('usuarios')) {
-    localStorage.setItem('usuarios', JSON.stringify(usuariosBase));
+function loadUsers() {
+    let list = [];
+    try {
+        list = JSON.parse(localStorage.getItem('usuarios')) || [];
+    } catch (err) {
+        list = [];
+    }
+
+    if (!Array.isArray(list)) {
+        list = [];
+    }
+
+    for (let i = 0; i < initUsers.length; i++) {
+        const u = initUsers[i];
+        const exists = list.some(item => item.usuario === u.usuario);
+        if (!exists) {
+            list.push(u);
+        }
+    }
+
+    localStorage.setItem('usuarios', JSON.stringify(list));
+    return list;
 }
+
+loadUsers();
 
 window.onload = function () {
     const nuevo = localStorage.getItem('usuarioNuevo');
@@ -20,24 +42,22 @@ window.onload = function () {
     cargarDatosUsuario();
 };
 
-function entrar(evento) {
-    evento.preventDefault();
+function entrar(ev) {
+    ev.preventDefault();
 
     const user = document.getElementById('usuarioLogin').value.trim();
     const pass = document.getElementById('claveLogin').value.trim();
-    const error = document.getElementById('mensajeError');
+    const errBox = document.getElementById('mensajeError');
 
-    const lista = JSON.parse(localStorage.getItem('usuarios')) || [];
-    const encontrado = lista.find(
-        u => u.usuario === user && u.pass === pass
-    );
+    const list = loadUsers();
+    const found = list.find(u => u.usuario === user && u.pass === pass);
 
-    if (encontrado) {
-        error.classList.add('ocultar');
-        sessionStorage.setItem('usuarioActivo', JSON.stringify(encontrado));
+    if (found) {
+        errBox.classList.add('ocultar');
+        sessionStorage.setItem('usuarioActivo', JSON.stringify(found));
         window.location.href = 'api.html';
     } else {
-        error.classList.remove('ocultar');
+        errBox.classList.remove('ocultar');
     }
 }
 
@@ -48,9 +68,13 @@ function salir() {
 
 function cargarDatosUsuario() {
     const sesion = JSON.parse(sessionStorage.getItem('usuarioActivo'));
-    const etiqueta = document.getElementById('infoUsuario');
+    const label = document.getElementById('infoUsuario');
 
-    if (sesion && etiqueta) {
-        etiqueta.textContent = 'Usuario: ' + sesion.usuario + ' (' + sesion.rol + ')';
+    if (label) {
+        if (!sesion) {
+            window.location.href = 'sesion.html';
+            return;
+        }
+        label.textContent = 'Usuario: ' + sesion.usuario + ' (' + sesion.rol + ')';
     }
 }

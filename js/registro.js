@@ -1,33 +1,55 @@
-const usuariosIniciales = [
-    { usuario: 'admin', pass: '1234', rol: 'admin' },
-    { usuario: 'cliente', pass: '12345', rol: 'cliente' },
+const baseUsers = [
+    { usuario: 'cliente', pass: '1234', rol: 'cliente' },
+    { usuario: 'admin', pass: '12345', rol: 'admin' },
     { usuario: 'boss', pass: '123456', rol: 'boss' }
 ];
 
-if (!localStorage.getItem('usuarios')) {
-    localStorage.setItem('usuarios', JSON.stringify(usuariosIniciales));
+function getUsers() {
+    let list = [];
+    try {
+        list = JSON.parse(localStorage.getItem('usuarios')) || [];
+    } catch (err) {
+        list = [];
+    }
+
+    if (!Array.isArray(list)) {
+        list = [];
+    }
+
+    for (let i = 0; i < baseUsers.length; i++) {
+        const u = baseUsers[i];
+        const exists = list.some(item => item.usuario === u.usuario);
+        if (!exists) {
+            list.push(u);
+        }
+    }
+
+    localStorage.setItem('usuarios', JSON.stringify(list));
+    return list;
 }
 
-function registrar(evento) {
-    evento.preventDefault();
+getUsers();
 
-    const nombre = document.getElementById('usuarioReg').value.trim();
-    const clave = document.getElementById('claveReg').value.trim();
+function registrar(ev) {
+    ev.preventDefault();
+
+    const name = document.getElementById('usuarioReg').value.trim();
+    const pass = document.getElementById('claveReg').value.trim();
     const rol = document.getElementById('rolReg').value;
 
-    if (nombre === '' || clave === '') return;
+    if (name === '' || pass === '') return;
 
-    const lista = JSON.parse(localStorage.getItem('usuarios')) || [];
-    const repetido = lista.some(item => item.usuario === nombre);
+    const list = getUsers();
+    const rep = list.some(item => item.usuario === name);
 
-    if (repetido) {
+    if (rep) {
         alert('Ese usuario ya existe');
         return;
     }
 
-    lista.push({ usuario: nombre, pass: clave, rol: rol });
-    localStorage.setItem('usuarios', JSON.stringify(lista));
-    localStorage.setItem('usuarioNuevo', nombre);
+    list.push({ usuario: name, pass: pass, rol: rol });
+    localStorage.setItem('usuarios', JSON.stringify(list));
+    localStorage.setItem('usuarioNuevo', name);
 
     alert('Cuenta creada');
     window.location.href = './html/sesion.html';

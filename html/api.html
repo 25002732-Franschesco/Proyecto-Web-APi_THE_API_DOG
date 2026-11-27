@@ -4,26 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perritos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body onload="cargarDatosUsuario()">
-    <div class="card">
+    <main class="card ancho-app">
         <h1 id="titulo">Perritos</h1>
         <p id="infoUsuario">Usuario:</p>
 
         <div class="fila">
-            <input type="text" id="textoBuscar" placeholder="Ej. Poodle, Husky...">
-            <button id="btnBuscar">Buscar</button>
-            <button id="btnAleatorio" class="ocultar">Aleatorio</button>
+            <label for="textoBuscar" class="visually-hidden">Buscar raza</label>
+            <input type="text" id="textoBuscar" class="form-control" placeholder="Ej. Poodle, Husky...">
+            <button type="button" id="btnBuscar" class="btn">Buscar</button>
+            <button type="button" id="btnAleatorio" class="btn ocultar">Aleatorio</button>
         </div>
 
         <div id="cajaBotonPeso" class="fila ocultar">
-            <button id="btnPeso" class="ancho-full">Ver tabla de peso</button>
+            <button type="button" id="btnPeso" class="btn ancho-full">Ver tabla de peso</button>
         </div>
 
         <div id="resultado" class="ocultar">
             <div id="fotoSola" class="caja-foto">
-                <img id="imgPerro" src="" alt="Perro">
+                <img id="imgPerro" src="" alt="Foto del perro">
             </div>
 
             <div id="fotosVarias" class="cuadricula ocultar"></div>
@@ -33,6 +35,8 @@
                 <p><b>Personalidad:</b> <span id="personalidadPerro">-</span></p>
                 <p><b>Vida:</b> <span id="vidaPerro">-</span></p>
                 <p><b>Origen:</b> <span id="origenPerro">-</span></p>
+                <button type="button" id="btnLike" class="btn btn-sm mt-2">Me gusta</button>
+                <button type="button" id="btnFav" class="btn btn-sm mt-2 ocultar">Guardar favorito</button>
             </div>
         </div>
 
@@ -50,10 +54,48 @@
             <p id="consejo" class="caja-datos ocultar"></p>
         </div>
 
-        <p id="errorPerro" class="error ocultar">No se encontró esa raza.</p>
+        <p id="errorPerro" class="error ocultar" role="alert">No se encontró esa raza.</p>
 
-        <button onclick="salir()" class="ancho-full btn-oscuro">Cerrar sesión</button>
-    </div>
+        <section id="zonaRanking" class="caja-datos ocultar" aria-label="Ranking de perritos">
+            <h2 class="h6 mb-2">Ranking de perritos más gustados</h2>
+            <ol id="listaRanking" class="mb-0 ps-3"></ol>
+        </section>
+
+        <section id="zonaFavs" class="caja-datos ocultar" aria-label="Mis favoritos">
+            <h2 class="h6 mb-2">Mis favoritos</h2>
+            <ul id="listaFavs" class="list-group list-group-flush"></ul>
+        </section>
+
+        <section id="zonaRegistros" class="caja-datos ocultar" aria-label="Lista de razas">
+            <h2 class="h6 mb-2">Lista de razas</h2>
+
+            <form id="formRegistro" class="mb-2">
+                <input type="hidden" id="idEditar">
+                <div class="fila">
+                    <label for="razaInput" class="visually-hidden">Raza</label>
+                    <input type="text" id="razaInput" class="form-control form-control-sm" placeholder="Raza" required>
+                    <label for="notaInput" class="visually-hidden">Nota</label>
+                    <input type="text" id="notaInput" class="form-control form-control-sm" placeholder="Nota" required>
+                    <button type="submit" class="btn btn-sm">Guardar</button>
+                </div>
+            </form>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Raza</th>
+                            <th>Nota</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpoRegistros"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <button type="button" onclick="salir()" class="btn ancho-full btn-oscuro">Cerrar sesión</button>
+    </main>
 
     <script src="../js/login.js"></script>
     <script src="../js/app.js"></script>
